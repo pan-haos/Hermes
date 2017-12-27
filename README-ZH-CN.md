@@ -9,7 +9,7 @@ Hermes的demo请点击[https://github.com/Xiaofei-it/Hermes-IPC-Demo](https://gi
 
 可能读者会觉得Hermes还是有点难用。我已经完成了基本功能并且做了许多性能优化。我下一步会简化使用步骤，使Hermes变得更简单可用，到时候发布0.7.0版。
 
-##特色
+## 特色
 
 1. 使得进程间通信像调用本地函数一样方便简单。
 
@@ -20,7 +20,7 @@ Hermes的demo请点击[https://github.com/Xiaofei-it/Hermes-IPC-Demo](https://gi
 4. 自带内存优化。Hermes内置两个垃圾回收器，本地进程在远端进程创建的实例和本地进程传给远端进程的回调接口会被自动回收。（为什么用中文说得这么啰嗦？？？）
 
 
-##基本原理
+## 基本原理
 
 IPC的主要目的是调用其他进程的函数，Hermes让你方便地调用其他进程函数，调用语句和本地进程函数调用一模一样。
 
@@ -71,7 +71,7 @@ public interface ISingleton {
     @MethodId(“getData”)
     String getData();
 
-}
+ }
 ```
 
 进程B使用单例的时候，代码如下：
@@ -81,9 +81,9 @@ public interface ISingleton {
 ISingleton singleton = Hermes.getInstance(ISingleton.class);
 
 //Set a data
-singleton.setData(“Hello, Hermes!”);
+ singleton.setData(“Hello, Hermes!”);
 
-//Get the data
+ //Get the data
 Log.v(TAG, singleton.getData());
 ```
 
@@ -91,45 +91,45 @@ Log.v(TAG, singleton.getData());
 
 只要给Hermes.getInstance()传入这样的接口，Hermes.getInstance()便会返回和进程A中实例一模一样的实例。之后你在进程B中调用这个实例的方法时，进程A的同一个实例的方法也被调用。
 
-但是，怎么写这种接口呢？很简单。比如，进程A有一个类Foo，你想在进程B中访问使用这个类。那么你写如下接口IFoo，加入同样的方法，再在类Foo和接口IFoo上加上同样的@ClassId注解，相同的方法上加上同样的@MethodId注解。之后你就可以在进程B使用Hermes.getInstance(IFoo.class)获取进程A的Foo实例。
+ 但是，怎么写这种接口呢？很简单。比如，进程A有一个类Foo，你想在进程B中访问使用这个类。那么你写如下接口IFoo，加入同样的方法，再在类Foo和接口IFoo上加上同样的@ClassId注解，相同的方法上加上同样的@MethodId注解。之后你就可以在进程B使用Hermes.getInstance(IFoo.class)获取进程A的Foo实例。
 
-##Gradle
+## Gradle
 
 ```
 dependencies {
     compile 'xiaofei.library:hermes:0.7.0'
 }
-```
+ ```
 
-##Maven
-
+ ## Maven
+ 
 ```
 <dependency>
   <groupId>xiaofei.library</groupId>
   <artifactId>hermes</artifactId>
   <version>0.7.0</version>
   <type>pom</type>
-</dependency>
+ </dependency>
 ```
 
-##使用方法
-
+ ## 使用方法
+ 
 接下来的部分将告诉你如何在其他进程调用主进程的函数。Hermes支持任意进程之间的函数调用，想要知道如何调用非主进程的函数，请看[这里](https://github.com/Xiaofei-it/Hermes/blob/master/AdvancedTutorial.md)。
 
 ###AndroidManifest.xml
 
 在AndroidManifest.xml中加入如下声明，你可以加上其他属性。
-
+ 
 ```
 <service android:name="xiaofei.library.hermes.HermesService$HermesService0">
 </service>
-```
+ ```
 
-###主进程初始化Hermes
-
+### 主进程初始化Hermes
+ 
 在给其他进程提供函数的进程中，使用Hermes.init(Context)初始化。
 
-###子进程连接Hermes
+### 子进程连接Hermes
 
 经常地，一个app有一个主进程。给这个主进程命名为进程A。
 
@@ -143,7 +143,7 @@ Hermes.connect(getApplicationContext());
 
 你可以调用Hermes.isConnected()来查看通信的进程是否还活着。
 
-###注册
+### 注册
 
 进程A中，被进程B调用的类需要事先注册。有两种注册类的API：Hermes.register(Class<?>)和Hermes.register(Object)。Hermes.register(object)等价于Hermes.register(object.getClass())。
 
